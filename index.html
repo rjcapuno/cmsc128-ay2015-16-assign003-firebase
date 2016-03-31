@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alpha Pad</title>
+
+    <!-- Bootstrap -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Custom -->
+    <link href="./css/style.css" rel="stylesheet">
+
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <div class-"row">
+          <div class="col-md-3"></div>
+          <div class="col-md-5">
+            <div class="jumbotron main">
+              <h1 class="title text-center">To-do</h1>
+              <div id="post-here">
+                <p><input type="checkbox" value="">Do this</p>
+              </div>
+                <div>
+                  <p>
+                    <a onclick="postNote()"> <span class="glyphicon glyphicon-send post" id="new-note"></span> </a>
+                    <input type="text" class="new-note" id="note" placeholder="Your note here"/>
+                <!--    <textarea rows="1" cols="30" class="new-note" id="note" placeholder="Your note here"></textarea> -->
+                  </p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+  var myDataRef = new Firebase('https://a580yx49ysr.firebaseio-demo.com/');
+  $('#note').keypress(function (e) {
+      if (e.keyCode == 13) {
+        var note = $('#note').val();
+        myDataRef.push({note: note});
+        $('#note').val('');
+      }
+    });
+
+
+    myDataRef.on('child_added', function(snapshot) {
+          var message = snapshot.val();
+          displayChatMessage(message.note);
+        });
+        function displayChatMessage(note) {
+          $('<p/>').text(note).appendTo($('#post-here'));
+          $('#post-here')[0].scrollTop = $('#post-here')[0].scrollHeight;
+        };
+  </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="./js/jquery-2.1.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./js/bootstrap.min.js"></script>
+
+</html>

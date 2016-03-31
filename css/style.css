@@ -1,0 +1,51 @@
+html {
+  background-image: url("../img/blackboard.jpg");
+  background-size: cover;
+  z-index: -1;
+}
+
+div.main {
+  font-size: 500%;
+  width: 150%;
+}
+
+div.main, div.container, div.container-fluid, div.list, input.new-note {
+  color: #f4f4f0;
+  font-family: chalk;
+  position: absolute;
+  background: none;
+}
+
+
+input.new-note {
+  border-color: #f4f4f0;
+}
+
+span.post {
+  font-size: 180%;
+  margin-right: 2%;
+}
+
+h1.title {
+  margin-bottom: 10%;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #f4f4f0;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #f4f4f0;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #f4f4f0;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #f4f4f0;
+}
+
+@font-face {
+    font-family: chalk;
+    src: url(../fonts/chawp.ttf);
+}
