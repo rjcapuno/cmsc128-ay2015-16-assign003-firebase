@@ -25,11 +25,9 @@
             <div class="jumbotron main">
               <h1 class="title text-center">To-do</h1>
               <div id="post-here">
-                <p><input type="checkbox" value="">Do this</p>
               </div>
                 <div>
                   <p>
-                    <a onclick="postNote()"> <span class="glyphicon glyphicon-send post" id="new-note"></span> </a>
                     <input type="text" class="new-note" id="note" placeholder="Your note here"/>
                 <!--    <textarea rows="1" cols="30" class="new-note" id="note" placeholder="Your note here"></textarea> -->
                   </p>
@@ -43,10 +41,13 @@
 
   <script>
   var myDataRef = new Firebase('https://a580yx49ysr.firebaseio-demo.com/');
+  var childRef = myDataRef.push({}).key()
+
   $('#note').keypress(function (e) {
       if (e.keyCode == 13) {
         var note = $('#note').val();
-        myDataRef.push({note: note});
+        var isDone = "false";
+        childRef = myDataRef.push({note: note, isDone: isDone}).key();
         $('#note').val('');
       }
     });
@@ -54,12 +55,35 @@
 
     myDataRef.on('child_added', function(snapshot) {
           var message = snapshot.val();
-          displayChatMessage(message.note);
+          childRef = snapshot.key();
+          displayChatMessage(message.note, message.isDone, childRef);
         });
-        function displayChatMessage(note) {
-          $('<p/>').text(note).appendTo($('#post-here'));
+        function displayChatMessage(note, isDone, childRef) {
+          $('<p/>').text(note).attr('id', ''+childRef).appendTo($('#post-here'));
+          $('#'+childRef).css("cursor", "pointer");
+          if(isDone != "false") {
+            $('#'+childRef).css("text-decoration", "line-through");
+            } else {
+            $('#'+childRef).css("text-decoration", "");
+          }
           $('#post-here')[0].scrollTop = $('#post-here')[0].scrollHeight;
         };
+
+        $(this).click(function (e) {
+          if(event.target.id != "note" && event.target.id != "post-here") {
+            var ref = myDataRef.child(event.target.id);
+            ref.once("value", function(snapshot) {
+            var data = snapshot.val();
+            if(data.isDone == "false") {
+              $('#'+event.target.id).css("text-decoration", "line-through");
+              ref.update({note: data.note, isDone: "true"});
+            } else {
+              $('#'+event.target.id).css("text-decoration", "");
+              ref.update({note: data.note, isDone: "false"});
+            }
+          });
+            }
+          });
   </script>
 
 

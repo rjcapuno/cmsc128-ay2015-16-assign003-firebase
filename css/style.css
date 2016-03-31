@@ -45,6 +45,10 @@ h1.title {
    color: #f4f4f0;
 }
 
+input {
+  margin-right: 3%;
+}
+
 @font-face {
     font-family: chalk;
     src: url(../fonts/chawp.ttf);
